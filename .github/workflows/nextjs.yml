@@ -21,30 +21,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Install Node and enable dependency caching for pnpm
+      # Install Node (this sets up the cache integration keying off pnpm-lock.yaml later)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: pnpm
 
-      # Setup pnpm
+      # Install pnpm (required; setup-node does NOT install pnpm)
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
           run_install: false
 
-      # Enable corepack explicitly (usually not required after pnpm/action-setup)
-      - name: Enable corepack
-        run: corepack enable
+      # (Alternative to the above: enable Corepack instead of pnpm/action-setup)
+      # - name: Enable Corepack (alternative)
+      #   run: |
+      #     corepack enable
+      #     corepack prepare pnpm@9.0.0 --activate
+      #   if: false  # flip to true and remove the pnpm/action-setup step above if you prefer Corepack
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
           static_site_generator: next
 
-      # Cache Next.js build cache separately (in addition to dependency cache)
+      # Cache Next.js build cache
       - name: Restore Next.js cache
         uses: actions/cache@v4
         with:
@@ -56,13 +59,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Build the project (turbopack per package.json). 
-      # Ensure next.config.mjs has: export default { output: 'export' } (or run next export below).
       - name: Build with Next.js
         run: pnpm run build
 
-      # If your build does NOT automatically create ./out (i.e., if output:'export' not set),
-      # uncomment the next step:
+      # If next build does not produce ./out (needs output: 'export' in next.config.mjs),
+      # uncomment the export step below:
       # - name: Export static site
       #   run: pnpm exec next export
 
