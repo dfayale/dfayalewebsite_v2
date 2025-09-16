@@ -2,7 +2,7 @@ name: Deploy Site
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,39 +11,32 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Install Node (this sets up the cache integration keying off pnpm-lock.yaml later)
+      # Make pnpm available BEFORE setup-node tries to cache it
+      - name: Install pnpm
+        run: npm i -g pnpm
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: 20
           cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      # (Alternative to the above: enable Corepack instead of pnpm/action-setup)
-      # - name: Enable Corepack (alternative)
-      #   run: |
-      #     corepack enable
-      #     corepack prepare pnpm@9.0.0 --activate
-      #   if: false  # flip to true and remove the pnpm/action-setup step above if you prefer Corepack
-
-      - name: Setup Pages
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
           static_site_generator: next
 
-      # Cache Next.js build cache
+      # Optional: Next.js incremental build cache
       - name: Restore Next.js cache
         uses: actions/cache@v4
         with:
@@ -55,13 +48,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build with Next.js
+      - name: Build
         run: pnpm run build
 
-      # If next build does not produce ./out (needs output: 'export' in next.config.mjs),
-      # uncomment the export step below:
-      # - name: Export static site
-      #   run: pnpm exec next export
+      - name: Export static site
+        run: pnpm exec next export
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
