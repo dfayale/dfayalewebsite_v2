@@ -28,12 +28,8 @@ jobs:
           node-version: "20"
           cache: pnpm
 
-      # Install pnpm (required; setup-node does NOT install pnpm)
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       # (Alternative to the above: enable Corepack instead of pnpm/action-setup)
       # - name: Enable Corepack (alternative)
