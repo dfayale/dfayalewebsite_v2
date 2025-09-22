@@ -39,7 +39,7 @@ export default function Home() {
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, []);
+  }, [finalPhrase]);
   return (
     <div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
       {/* Ambient animated background */}
