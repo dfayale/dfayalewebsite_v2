@@ -1,6 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import HomeHero from "./components/home-hero";
+import ValueProps from "./components/value-props";
+import ImpactStats from "./components/impact-stats";
+import TeamPreview from "./components/team-preview";
+import GetInvolved from "./components/get-involved";
 
 export default function Home() {
   const finalPhrase = "Great things are coming";
@@ -41,31 +43,12 @@ export default function Home() {
     };
   }, [finalPhrase]);
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
-      {/* Ambient animated background */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-ominous" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 scanlines mix-blend-overlay opacity-20" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 vignette" />
-      <div aria-hidden className="pointer-events-none absolute -top-24 -left-24 size-[60vmax] orb orb-purple" />
-      <div aria-hidden className="pointer-events-none absolute -bottom-32 -right-16 size-[45vmax] orb orb-blue [animation-delay:700ms]" />
-
-      {/* Content */}
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-        <div className="mb-8 text-xs uppercase tracking-[0.35em] opacity-70">DFA Yale</div>
-        <h1 className="text-pretty text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight">
-          {typed}
-          <span aria-hidden className="ml-2 inline-block caret blink">_</span>
-        </h1>
-        <p className="mt-6 max-w-xl text-balance text-sm sm:text-base opacity-80">
-          A whole new experience is on the way. We’re crafting something a little different—stay tuned!
-        </p>
-
-        <div className="mt-10 flex items-center gap-4 opacity-90">
-          <span className="h-px w-12 bg-current/40" />
-          <span className="text-xs uppercase tracking-widest">Coming soon</span>
-          <span className="h-px w-12 bg-current/40" />
-        </div>
-      </main>
-    </div>
+    <>
+      <HomeHero />
+      <ImpactStats />
+      <ValueProps />
+      <TeamPreview />
+      <GetInvolved />
+    </>
   );
 }
