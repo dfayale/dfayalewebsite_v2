@@ -20,82 +20,84 @@ export default function Navbar() {
     }, []);
 
     return (
-        <header
-            className={`sticky top-0 z-50 transition-all backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-neutral-900/70 ${scrolled
-                    ? "border-b border-black/10 dark:border-white/10 shadow-sm"
-                    : ""
-                }`}
-        >
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <Link
-                    href="/"
-                    className="text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity"
+        <header className="sticky top-4 z-50 transition-all">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div
+                    className={`h-14 sm:h-16 flex items-center justify-between rounded-full border backdrop-blur px-3 sm:px-5 shadow-sm transition-all
+                    ${scrolled
+                            ? "bg-white/70 dark:bg-neutral-900/70 border-black/10 dark:border-white/10 shadow-md"
+                            : "bg-white/50 dark:bg-neutral-900/50 border-black/5 dark:border-white/5"
+                        }`}
                 >
-                    DFA Yale
-                </Link>
-                <nav className="hidden md:flex gap-8 text-sm font-medium">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className="relative group tracking-tight"
-                        >
-                            {item.label}
-                            <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all group-hover:w-full" />
-                        </Link>
-                    ))}
-                </nav>
-                <div className="flex items-center gap-3">
                     <Link
-                        href="#get-involved"
-                        className="hidden sm:inline-flex rounded-full bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium shadow-sm hover:shadow transition-shadow"
+                        href="/"
+                        className="text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity"
                     >
-                        Join Us
+                        DFA Yale
                     </Link>
-                    <button
-                        aria-label="Toggle navigation"
-                        className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-black/10 dark:border-white/10"
-                        onClick={() => setOpen((o) => !o)}
-                    >
-                        <span className="sr-only">Menu</span>
-                        <div className="space-y-1.5">
-                            <span
-                                className={`block h-0.5 w-5 bg-current transition-transform ${open ? "translate-y-2 rotate-45" : ""
-                                    }`}
-                            />
-                            <span
-                                className={`block h-0.5 w-5 bg-current transition-opacity ${open ? "opacity-0" : ""
-                                    }`}
-                            />
-                            <span
-                                className={`block h-0.5 w-5 bg-current transition-transform ${open ? "-translate-y-2 -rotate-45" : ""
-                                    }`}
-                            />
-                        </div>
-                    </button>
-                </div>
-            </div>
-            {open && (
-                <div className="md:hidden border-t border-black/10 dark:border-white/10 bg-white/90 dark:bg-neutral-900/90 backdrop-blur">
-                    <nav className="px-4 py-4 flex flex-col gap-4 text-sm">
+                    <nav className="hidden md:flex gap-8 text-sm font-medium">
                         {navItems.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                onClick={() => setOpen(false)}
-                                className="py-1"
+                                className="relative group tracking-tight"
                             >
                                 {item.label}
+                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all group-hover:w-full" />
                             </Link>
                         ))}
+                    </nav>
+                    <div className="flex items-center gap-3">
                         <Link
                             href="#get-involved"
-                            onClick={() => setOpen(false)}
-                            className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-center font-medium"
+                            className="hidden sm:inline-flex rounded-full bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium shadow-sm hover:shadow transition-shadow"
                         >
                             Join Us
                         </Link>
-                    </nav>
+                        <button
+                            aria-label="Toggle navigation"
+                            className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-black/10 dark:border-white/10 bg-white/60 dark:bg-neutral-900/60 backdrop-blur"
+                            onClick={() => setOpen((o) => !o)}
+                        >
+                            <span className="sr-only">Menu</span>
+                            <div className="space-y-1.5">
+                                <span
+                                    className={`block h-0.5 w-5 bg-current transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
+                                />
+                                <span
+                                    className={`block h-0.5 w-5 bg-current transition-opacity ${open ? "opacity-0" : ""}`}
+                                />
+                                <span
+                                    className={`block h-0.5 w-5 bg-current transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
+                                />
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {open && (
+                <div className="md:hidden px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-7xl mt-2 rounded-2xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur shadow-lg">
+                        <nav className="p-4 flex flex-col gap-4 text-sm">
+                            {navItems.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={() => setOpen(false)}
+                                    className="py-1"
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                            <Link
+                                href="#get-involved"
+                                onClick={() => setOpen(false)}
+                                className="rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-center font-medium"
+                            >
+                                Join Us
+                            </Link>
+                        </nav>
+                    </div>
                 </div>
             )}
         </header>

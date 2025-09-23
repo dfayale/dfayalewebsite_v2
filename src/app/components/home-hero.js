@@ -2,13 +2,18 @@ import Link from "next/link";
 
 export default function HomeHero() {
     return (
-        <section className="relative overflow-hidden pt-20 pb-24" aria-labelledby="hero-heading">
-            <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_20%,rgba(120,119,198,0.15),transparent_60%)]" />
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden pb-24 -mt-14 sm:-mt-16" aria-labelledby="hero-heading">
+            <div className="absolute inset-0 -z-10">
+                <div className="absolute inset-0 bg-gradient-to-br from-stone-100 via-indigo-200/90 to-indigo-400/10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-stone-50/40 to-white/90" />
+                <div className="absolute inset-0 backdrop-blur-[2px]" />
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/95 via-white/60 to-transparent backdrop-blur-sm" />
+            </div>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24">
                 <div className="max-w-3xl">
                     <h1
                         id="hero-heading"
-                        className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-[1.1]"
+                        className="mt-25 text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-[1.1]"
                     >
                         Human-Centered Design for Social Impact at Yale
                     </h1>
