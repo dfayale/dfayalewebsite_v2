@@ -54,15 +54,10 @@ export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
 
   try {
     console.log("Making API call to Notion...");
-    const url = import.meta.env.DEV
-      ? '/api/notion/query'
-      : `https://api.notion.com/v1/databases/${databaseId}/query`;
     
-    const response = await fetch(url, {
+    const response = await fetch('/api/notion/query', {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Notion-Version": "2025-09-03",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
