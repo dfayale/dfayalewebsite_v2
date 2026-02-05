@@ -56,35 +56,66 @@ export default async function handler(
     const dbData = await dbResponse.json();
     const dataSourceId = dbData?.data_sources?.[0]?.id;
 
-    if (!dataSourceId) {
-      console.error(
-        `No data_sources found for database ${notionDatabaseId}. Response:`,
-        JSON.stringify(dbData)
+    const queryBody = JSON.stringify(req.body ?? {});
+
+    // Prefer data_sources query when available (newer API), otherwise fall back
+    let queryResponse: Response | null = null;
+
+    if (dataSourceId) {
+      queryResponse = await fetch(
+        `https://api.notion.com/v1/data_sources/${dataSourceId}/query`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${notionApiKey}`,
+            "Notion-Version": "2025-09-03",
+            "Content-Type": "application/json",
+          },
+          body: queryBody,
+        }
       );
-      return res.status(500).json({
-        error:
-          "No data_sources found. Ensure this is a regular database (not linked/wiki) and shared with the integration.",
+    }
+
+    if (!queryResponse || !queryResponse.ok) {
+      // Fallback to legacy database query endpoint
+      if (queryResponse) {
+        const dataSourceError = await queryResponse.text();
+        console.error(
+          `Data source query failed for ${notionDatabaseId}:`,
+          queryResponse.status,
+          dataSourceError
+        );
+      }
+
+      queryResponse = await fetch(
+        `https://api.notion.com/v1/databases/${notionDatabaseId}/query`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${notionApiKey}`,
+            "Notion-Version": "2025-09-03",
+            "Content-Type": "application/json",
+          },
+          body: queryBody,
+        }
+      );
+    }
+
+    const responseText = await queryResponse.text();
+
+    if (!queryResponse.ok) {
+      console.error(
+        `Database query failed for ${notionDatabaseId}:`,
+        queryResponse.status,
+        responseText
+      );
+      return res.status(queryResponse.status).json({
+        error: responseText || "Notion query failed",
       });
     }
 
-    // Now query the data source with the request body
-    const queryResponse = await fetch(
-      `https://api.notion.com/v1/data_sources/${dataSourceId}/query`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${notionApiKey}`,
-          "Notion-Version": "2025-09-03",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(req.body),
-      }
-    );
-
-    const responseData = await queryResponse.json();
-
     // Forward the response status and data
-    res.status(queryResponse.status).json(responseData);
+    res.status(queryResponse.status).json(JSON.parse(responseText));
   } catch (error) {
     console.error("Notion API error:", error);
     res.status(500).json({
