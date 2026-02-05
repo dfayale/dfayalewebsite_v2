@@ -11,13 +11,20 @@ export default async function handler(
 
   // Get environment variables
   const notionApiKey = process.env.VITE_NOTION_API_KEY;
-  const notionDatabaseId = process.env.VITE_NOTION_DATABASE_ID;
+  let notionDatabaseId = process.env.VITE_NOTION_DATABASE_ID;
+
+  // Allow databaseId to be passed as a query parameter (for fetchMembersFromNotion)
+  if (req.query.databaseId && typeof req.query.databaseId === "string") {
+    notionDatabaseId = req.query.databaseId;
+  }
 
   if (!notionApiKey) {
+    console.error("Missing VITE_NOTION_API_KEY environment variable");
     return res.status(500).json({ error: "Missing VITE_NOTION_API_KEY" });
   }
 
   if (!notionDatabaseId) {
+    console.error("Missing VITE_NOTION_DATABASE_ID environment variable");
     return res.status(500).json({ error: "Missing VITE_NOTION_DATABASE_ID" });
   }
 
@@ -36,6 +43,11 @@ export default async function handler(
 
     if (!dbResponse.ok) {
       const dbError = await dbResponse.text();
+      console.error(
+        `Failed to fetch database info for ${notionDatabaseId}:`,
+        dbResponse.status,
+        dbError
+      );
       return res.status(dbResponse.status).json({
         error: `Failed to fetch database info: ${dbError}`,
       });
@@ -45,6 +57,10 @@ export default async function handler(
     const dataSourceId = dbData?.data_sources?.[0]?.id;
 
     if (!dataSourceId) {
+      console.error(
+        `No data_sources found for database ${notionDatabaseId}. Response:`,
+        JSON.stringify(dbData)
+      );
       return res.status(500).json({
         error:
           "No data_sources found. Ensure this is a regular database (not linked/wiki) and shared with the integration.",

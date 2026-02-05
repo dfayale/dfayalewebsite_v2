@@ -118,26 +118,20 @@ export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
 export async function fetchMembersFromNotion(
   databaseId: string
 ): Promise<NotionMember[]> {
-  const apiKey = import.meta.env.VITE_NOTION_API_KEY;
-
-  if (!apiKey || !databaseId) {
+  if (!databaseId) {
     console.error(
-      "Missing Notion API configuration. Please set VITE_NOTION_API_KEY and a members database id."
+      "Missing databaseId for members. Please provide a members database id."
     );
     return [];
   }
 
   try {
-    // Use proxy in development, direct API call in production
-    const url = import.meta.env.DEV
-      ? `/api/notion/query?databaseId=${encodeURIComponent(databaseId)}`
-      : `https://api.notion.com/v1/databases/${databaseId}/query`;
+    // Always use proxy to avoid CORS issues
+    const url = `/api/notion/query?databaseId=${encodeURIComponent(databaseId)}`;
 
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Notion-Version": "2025-09-03",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({}),
