@@ -220,15 +220,53 @@ const EventCard = ({ event }: { event: NotionEvent | any }) => {
 
 export default function LandingPage() {
   const [currentPage, setCurrentPage] = useState<"home" | "pro-studio">("home");
-  const [activeTab, setActiveTab] = useState<"team" | "events" | "highlights">(
-    "team",
-  );
+  const [activeTab, setActiveTab] = useState<"team" | "events">("team");
   const [notionEvents, setNotionEvents] = useState<NotionEvent[]>([]);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   const [notionMembers, setNotionMembers] = useState<NotionMember[]>([]);
   const [isLoadingMembers, setIsLoadingMembers] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
 
   const MEMBERS_DATABASE_ID = "239145b63a1f81f690f4e7267863055c";
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNewsletterStatus("loading");
+    setNewsletterMessage("");
+
+    try {
+      const response = await fetch("/api/mailchimp/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: newsletterEmail,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setNewsletterStatus("error");
+        setNewsletterMessage(
+          data.error || "Failed to subscribe. Please try again.",
+        );
+        return;
+      }
+
+      setNewsletterStatus("success");
+      setNewsletterMessage(data.message || "Thanks for subscribing!");
+      setNewsletterEmail("");
+    } catch (error) {
+      setNewsletterStatus("error");
+      setNewsletterMessage("Oops! Something went wrong. Please try again.");
+    }
+  };
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -493,7 +531,6 @@ export default function LandingPage() {
             {[
               { id: "team", label: "Team" },
               { id: "events", label: "Events" },
-              { id: "highlights", label: "Highlights" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -848,6 +885,83 @@ export default function LandingPage() {
             </div>
             <div className="text-2xl md:text-3xl font-bold text-slate-400 hover:text-slate-800 transition-colors cursor-default">
               CEID
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Newsletter Section --- */}
+      <section className="py-24 px-6 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-6xl mx-auto">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
+            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-slate-200/60 blur-3xl"></div>
+
+            <div className="relative z-10 p-10 md:p-14 flex flex-col md:flex-row items-center gap-10">
+              <div className="text-center md:text-left max-w-xl">
+                <div className="inline-flex items-center gap-2 bg-[#1f3449] text-white px-4 py-2 rounded-full font-bold mb-6 shadow-md text-sm uppercase tracking-wide">
+                  Join Our Newsletter
+                </div>
+
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                  Stay in the Loop
+                </h2>
+
+                <p className="text-lg md:text-xl text-slate-600 font-light leading-relaxed">
+                  Get updates on events, workshops, and opportunities to make an
+                  impact through design.
+                </p>
+              </div>
+
+              <form
+                onSubmit={handleNewsletterSubmit}
+                className="w-full md:w-[420px]"
+              >
+                <div className="flex flex-col gap-3">
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    disabled={
+                      newsletterStatus === "loading" ||
+                      newsletterStatus === "success"
+                    }
+                    className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 text-base md:text-lg disabled:bg-slate-100 disabled:cursor-not-allowed transition-all"
+                  />
+                  <button
+                    type="submit"
+                    disabled={
+                      newsletterStatus === "loading" ||
+                      newsletterStatus === "success"
+                    }
+                    className="w-full px-6 py-4 bg-[#1f3449] text-white font-bold rounded-xl hover:bg-[#183044] transition-all disabled:bg-slate-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex justify-center items-center"
+                  >
+                    {newsletterStatus === "loading"
+                      ? "Subscribing..."
+                      : newsletterStatus === "success"
+                        ? "Subscribed!"
+                        : "Join the newsletter"}
+                  </button>
+                </div>
+
+                {newsletterMessage && (
+                  <p
+                    className={`mt-3 text-sm font-medium ${
+                      newsletterStatus === "success"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {newsletterMessage}
+                  </p>
+                )}
+
+                <p className="mt-4 text-xs text-slate-400">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </form>
             </div>
           </div>
         </div>

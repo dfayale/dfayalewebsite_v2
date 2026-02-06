@@ -2,14 +2,17 @@
   import { defineConfig, loadEnv } from 'vite';
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
+  import crypto from 'crypto';
 
-  export default defineConfig(({ mode }) => {
+  export default defineConfig(async ({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
     const notionApiKey = env.VITE_NOTION_API_KEY;
     const notionDatabaseId = env.VITE_NOTION_DATABASE_ID;
+    const tailwindcss = (await import('@tailwindcss/vite')).default;
 
     return {
     plugins: [
+      tailwindcss(),
       react(),
       {
         name: 'notion-proxy',
@@ -112,6 +115,143 @@
                 res.end(
                   JSON.stringify({
                     error: error instanceof Error ? error.message : 'Unknown error',
+                  })
+                );
+              }
+            });
+          });
+        },
+      },
+      {
+        name: 'mailchimp-proxy',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (!req.url?.startsWith('/api/mailchimp/subscribe')) {
+              next();
+              return;
+            }
+
+            if (req.method !== 'POST') {
+              res.statusCode = 405;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: 'Method not allowed' }));
+              return;
+            }
+
+            const apiKey = env.MAILCHIMP_API_KEY;
+            const audienceId = env.MAILCHIMP_AUDIENCE_ID;
+            const serverPrefix = env.MAILCHIMP_SERVER_PREFIX;
+
+            if (!apiKey || !audienceId || !serverPrefix) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(
+                JSON.stringify({
+                  error:
+                    'Missing Mailchimp environment variables. Please set MAILCHIMP_API_KEY, MAILCHIMP_AUDIENCE_ID, and MAILCHIMP_SERVER_PREFIX.',
+                })
+              );
+              return;
+            }
+
+            let body = '';
+            req.on('data', (chunk) => {
+              body += chunk.toString();
+            });
+
+            req.on('end', async () => {
+              try {
+                const parsedBody = body ? JSON.parse(body) : {};
+                const email = parsedBody?.email;
+
+                if (!email || typeof email !== 'string') {
+                  res.statusCode = 400;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ error: 'Email is required' }));
+                  return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                  res.statusCode = 400;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ error: 'Invalid email format' }));
+                  return;
+                }
+
+                const subscriberHash = crypto
+                  .createHash('md5')
+                  .update(email.toLowerCase())
+                  .digest('hex');
+
+                const url = `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${audienceId}/members/${subscriberHash}`;
+                const authHeader = `Basic ${Buffer.from(
+                  `anystring:${apiKey}`
+                ).toString('base64')}`;
+
+                const response = await fetch(url, {
+                  method: 'PUT',
+                  headers: {
+                    Authorization: authHeader,
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    email_address: email,
+                    status_if_new: 'subscribed',
+                    status: 'subscribed',
+                  }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                  if (data?.title === 'Member Exists') {
+                    res.statusCode = 400;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(
+                      JSON.stringify({
+                        error:
+                          'This email is already subscribed to our newsletter.',
+                      })
+                    );
+                    return;
+                  }
+
+                  if (data?.title === 'Invalid Resource') {
+                    res.statusCode = 400;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ error: 'Invalid email address.' }));
+                    return;
+                  }
+
+                  res.statusCode = response.status;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(
+                    JSON.stringify({
+                      error:
+                        data?.detail ||
+                        'Failed to subscribe. Please try again.',
+                    })
+                  );
+                  return;
+                }
+
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(
+                  JSON.stringify({
+                    success: true,
+                    message: 'Successfully subscribed to newsletter!',
+                    email: data?.email_address || email,
+                  })
+                );
+              } catch (error) {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(
+                  JSON.stringify({
+                    error:
+                      error instanceof Error ? error.message : 'Unknown error',
                   })
                 );
               }
