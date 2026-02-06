@@ -138,9 +138,13 @@
               return;
             }
 
-            const apiKey = env.MAILCHIMP_API_KEY;
-            const audienceId = env.MAILCHIMP_AUDIENCE_ID;
-            const serverPrefix = env.MAILCHIMP_SERVER_PREFIX;
+            const apiKey =
+              env.MAILCHIMP_API_KEY || process.env.MAILCHIMP_API_KEY;
+            const audienceId =
+              env.MAILCHIMP_AUDIENCE_ID || process.env.MAILCHIMP_AUDIENCE_ID;
+            const serverPrefix =
+              env.MAILCHIMP_SERVER_PREFIX ||
+              process.env.MAILCHIMP_SERVER_PREFIX;
 
             if (!apiKey || !audienceId || !serverPrefix) {
               res.statusCode = 500;

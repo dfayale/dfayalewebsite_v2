@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-module.exports = async function handler(req: any, res: any) {
+export default async function handler(req: any, res: any) {
   // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -40,10 +40,14 @@ module.exports = async function handler(req: any, res: any) {
     // Mailchimp API endpoint to add/update a list member
     const url = `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${audienceId}/members/${subscriberHash}`;
 
+    const authHeader = `Basic ${Buffer.from(`anystring:${apiKey}`).toString(
+      'base64'
+    )}`;
+
     const response = await fetch(url, {
       method: 'PUT', // PUT will create or update
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: authHeader,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -88,4 +92,4 @@ module.exports = async function handler(req: any, res: any) {
       error: 'An error occurred while subscribing. Please try again.' 
     });
   }
-};
+}
