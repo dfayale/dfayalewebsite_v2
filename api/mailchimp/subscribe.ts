@@ -1,6 +1,6 @@
-import crypto from 'crypto';
+const crypto = require('crypto');
 
-export default async function handler(req: any, res: any) {
+module.exports = async function handler(req: any, res: any) {
   // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -92,4 +92,4 @@ export default async function handler(req: any, res: any) {
       error: 'An error occurred while subscribing. Please try again.' 
     });
   }
-}
+};
