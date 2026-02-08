@@ -32,6 +32,26 @@ function getCoverUrl(page: any): string | undefined {
 }
 
 /**
+ * Helper function to extract a file URL from any Notion "files" property
+ */
+function getFilesPropertyUrl(properties: Record<string, any>): string | undefined {
+  if (!properties) return undefined;
+
+  const fileProperty = Object.values(properties).find(
+    (prop: any) => prop?.type === "files" && Array.isArray(prop.files) && prop.files.length > 0
+  ) as any;
+
+  if (!fileProperty) return undefined;
+
+  const file = fileProperty.files[0];
+  if (!file) return undefined;
+
+  if (file.type === "external") return file.external.url;
+  if (file.type === "file") return file.file.url;
+  return undefined;
+}
+
+/**
  * Fetch events from a Notion database
  * Requires:
  * - VITE_NOTION_API_KEY: Your Notion API key
@@ -173,7 +193,7 @@ export async function fetchMembersFromNotion(
       const fallbackName = properties.Name?.title?.[0]?.plain_text;
 
       // Extract cover image URL using helper function
-      const coverImage = getCoverUrl(page);
+      const coverImage = getCoverUrl(page) || getFilesPropertyUrl(properties);
 
       return {
         id: page.id,
