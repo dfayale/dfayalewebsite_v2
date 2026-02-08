@@ -890,134 +890,123 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* --- Newsletter Section --- */}
-      <section className="py-24 px-6 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-6xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
-            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl"></div>
-            <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-slate-200/60 blur-3xl"></div>
-
-            <div className="relative z-10 p-10 md:p-14 flex flex-col md:flex-row items-center gap-10">
-              <div className="text-center md:text-left max-w-xl">
-                <div className="inline-flex items-center gap-2 bg-[#1f3449] text-white px-4 py-2 rounded-full font-bold mb-6 shadow-md text-sm uppercase tracking-wide">
-                  Join Our Newsletter
-                </div>
-
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                  Stay in the Loop
-                </h2>
-
-                <p className="text-lg md:text-xl text-slate-600 font-light leading-relaxed">
-                  Get updates on events, workshops, and opportunities to make an
-                  impact through design.
-                </p>
-              </div>
-
-              <form
-                onSubmit={handleNewsletterSubmit}
-                className="w-full md:w-[420px]"
-              >
-                <div className="flex flex-col gap-3">
-                  <input
-                    type="email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    disabled={
-                      newsletterStatus === "loading" ||
-                      newsletterStatus === "success"
-                    }
-                    className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20 text-base md:text-lg disabled:bg-slate-100 disabled:cursor-not-allowed transition-all"
-                  />
-                  <button
-                    type="submit"
-                    disabled={
-                      newsletterStatus === "loading" ||
-                      newsletterStatus === "success"
-                    }
-                    className="w-full px-6 py-4 bg-[#1f3449] text-white font-bold rounded-xl hover:bg-[#183044] transition-all disabled:bg-slate-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex justify-center items-center"
-                  >
-                    {newsletterStatus === "loading"
-                      ? "Subscribing..."
-                      : newsletterStatus === "success"
-                        ? "Subscribed!"
-                        : "Join the newsletter"}
-                  </button>
-                </div>
-
-                {newsletterMessage && (
-                  <p
-                    className={`mt-3 text-sm font-medium ${
-                      newsletterStatus === "success"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {newsletterMessage}
-                  </p>
-                )}
-
-                <p className="mt-4 text-xs text-slate-400">
-                  We respect your privacy. Unsubscribe at any time.
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* --- Stay in Touch / Footer --- */}
       <footer className="bg-[#1f3449] text-white pt-24 pb-12 relative overflow-hidden">
         {/* Decorative Gradient */}
         <div className="absolute bottom-0 left-0 w-full h-[400px] bg-gradient-to-t from-blue-900/50 to-transparent pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center flex flex-col items-center">
-          <div className="inline-block bg-white text-[#1f3449] px-6 py-2 rounded-full font-bold mb-12 shadow-lg">
-            Stay in touch
-          </div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center">
+          <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-12 md:gap-16 mb-16">
+            <div className="flex-1 md:flex-[0.85] text-center md:text-left flex flex-col items-center md:items-start">
+              <img
+                src={imgDfaLogo}
+                alt="DFA Logo"
+                className="w-24 h-auto mb-6 opacity-90 hover:opacity-100 transition-opacity"
+              />
 
-          <img
-            src={imgDfaLogo}
-            alt="DFA Logo"
-            className="w-24 h-auto mb-8 opacity-90 hover:opacity-100 transition-opacity"
-          />
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                Design for America <span className="text-blue-400">@ Yale</span>
+              </h2>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-12">
-            Design for America <span className="text-blue-400">@ Yale</span>
-          </h2>
+              <div className="flex justify-center md:justify-start gap-6">
+                <a
+                  href="https://www.instagram.com/dfayale"
+                  className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
+                >
+                  <Instagram className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/dfayale/"
+                  className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
+                >
+                  <Linkedin className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="https://linktr.ee/dfayale"
+                  className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
+                >
+                  <svg
+                    viewBox="0 0 55 55"
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                  >
+                    <path d={svgPathsHighlights.p347dcb00} />
+                  </svg>
+                </a>
+                <a
+                  href="mailto:yale@designforamerica.com"
+                  className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
+                >
+                  <Mail className="w-6 h-6 text-white" />
+                </a>
+              </div>
+            </div>
 
-          <div className="flex justify-center gap-6 mb-16">
-            <a
-              href="https://www.instagram.com/dfayale"
-              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
-            >
-              <Instagram className="w-6 h-6 text-white" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/dfayale/"
-              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
-            >
-              <Linkedin className="w-6 h-6 text-white" />
-            </a>
-            <a
-              href="https://linktr.ee/dfayale"
-              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
-            >
-              <svg
-                viewBox="0 0 55 55"
-                className="w-6 h-6 text-white"
-                fill="currentColor"
-              >
-                <path d={svgPathsHighlights.p347dcb00} />
-              </svg>
-            </a>
-            <a
-              href="mailto:yale@designforamerica.com"
-              className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
-            >
-              <Mail className="w-6 h-6 text-white" />
-            </a>
+            <div className="flex-1 md:flex-[1.15] w-full">
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/10 backdrop-blur-md shadow-2xl">
+                <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-300/30 blur-3xl"></div>
+                <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+
+                <div className="relative z-10 p-6 md:p-8 flex flex-col gap-6">
+                  <div className="text-center md:text-left">
+                    <div className="inline-flex items-center gap-2 bg-white text-[#1f3449] px-3 py-1.5 rounded-full font-bold mb-3 shadow-md text-xs uppercase tracking-wide">
+                      Join Our Newsletter
+                    </div>
+
+                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                      Stay in the Loop
+                    </h2>
+                  </div>
+
+                  <form onSubmit={handleNewsletterSubmit}>
+                    <div className="flex flex-col md:flex-row md:items-center gap-3">
+                      <input
+                        type="email"
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        required
+                        disabled={
+                          newsletterStatus === "loading" ||
+                          newsletterStatus === "success"
+                        }
+                        className="w-full md:flex-1 md:min-w-[320px] px-5 py-4 rounded-xl border border-white/20 bg-white/90 text-slate-900 focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300/40 text-base md:text-lg disabled:bg-white/60 disabled:cursor-not-allowed transition-all"
+                      />
+                      <button
+                        type="submit"
+                        disabled={
+                          newsletterStatus === "loading" ||
+                          newsletterStatus === "success"
+                        }
+                        className="w-full md:w-auto px-6 py-4 bg-white text-[#1f3449] font-bold rounded-xl hover:bg-blue-50 transition-all disabled:bg-white/70 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex justify-center items-center text-base md:text-lg whitespace-nowrap"
+                      >
+                        {newsletterStatus === "loading"
+                          ? "Subscribing..."
+                          : newsletterStatus === "success"
+                            ? "Subscribed!"
+                            : "Join the newsletter"}
+                      </button>
+                    </div>
+
+                    {newsletterMessage && (
+                      <p
+                        className={`mt-3 text-sm font-medium ${
+                          newsletterStatus === "success"
+                            ? "text-green-300"
+                            : "text-red-300"
+                        }`}
+                      >
+                        {newsletterMessage}
+                      </p>
+                    )}
+
+                    <p className="mt-4 text-xs text-slate-300">
+                      We respect your privacy. Unsubscribe at any time.
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="border-t border-white/10 pt-12 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm w-full">
