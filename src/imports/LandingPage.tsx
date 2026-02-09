@@ -975,10 +975,6 @@ export default function LandingPage() {
                 className="w-24 h-auto mb-6 opacity-90 hover:opacity-100 transition-opacity"
               />
 
-              <h2 className="text-4xl md:text-5xl font-bold mb-8">
-                Design for America <span className="text-blue-400">@ Yale</span>
-              </h2>
-
               <div className="flex justify-center md:justify-start gap-6">
                 <a
                   href="https://www.instagram.com/dfayale"
@@ -1020,12 +1016,8 @@ export default function LandingPage() {
 
                 <div className="relative z-10 p-6 md:p-8 flex flex-col gap-6">
                   <div className="text-center md:text-left">
-                    <div className="inline-flex items-center gap-2 bg-white text-[#1f3449] px-3 py-1.5 rounded-full font-bold mb-3 shadow-md text-xs uppercase tracking-wide">
-                      Join Our Newsletter
-                    </div>
-
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                      Stay in the Loop
+                      Stay in the Loop, join our newsletter!
                     </h2>
                   </div>
 
@@ -1049,13 +1041,13 @@ export default function LandingPage() {
                           newsletterStatus === "loading" ||
                           newsletterStatus === "success"
                         }
-                        className="w-full md:w-auto px-6 py-4 bg-white text-[#1f3449] font-bold rounded-xl hover:bg-blue-50 transition-all disabled:bg-white/70 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex justify-center items-center text-base md:text-lg whitespace-nowrap"
+                        className="w-auto md:w-auto px-6 py-4 bg-white text-[#1f3449] font-bold rounded-xl hover:bg-blue-50 transition-all disabled:bg-white/70 disabled:cursor-not-allowed shadow-lg hover:shadow-xl flex justify-center items-center text-base md:text-lg whitespace-nowrap"
                       >
                         {newsletterStatus === "loading"
                           ? "Subscribing..."
                           : newsletterStatus === "success"
                             ? "Subscribed!"
-                            : "Join the newsletter"}
+                            : "Join"}
                       </button>
                     </div>
 
