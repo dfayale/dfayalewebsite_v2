@@ -24,6 +24,13 @@
               return;
             }
 
+            if (req.method !== 'POST') {
+              res.statusCode = 405;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ error: 'Method not allowed' }));
+              return;
+            }
+
             if (!notionApiKey) {
               res.statusCode = 500;
               res.setHeader('Content-Type', 'application/json');
