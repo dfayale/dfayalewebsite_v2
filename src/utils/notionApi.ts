@@ -58,14 +58,7 @@ function getFilesPropertyUrl(properties: Record<string, any>): string | undefine
  * - NOTION_DATABASE_ID: The ID of your events database
  */
 export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
-  console.log("Fetching events from Notion...");
-
-  // Client does not access Notion secrets directly. The proxy is responsible
-  // for server-only env vars (NOTION_API_KEY, NOTION_DATABASE_ID).
-
   try {
-    console.log("Making API call to Notion...");
-    
     const response = await fetch('/api/notion/query', {
       method: "POST",
       headers: {
@@ -81,8 +74,6 @@ export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
       }),
     });
 
-    console.log("API Response status:", response.status);
-
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Failed to fetch events from Notion:", response.statusText, errorText);
@@ -90,7 +81,6 @@ export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
     }
 
     const data = await response.json();
-    console.log("Events received:", data.results.length);
     const events: NotionEvent[] = data.results.map((page: any) => {
       const properties = page.properties;
 
