@@ -855,7 +855,7 @@ export default function LandingPage() {
                     Information Session
                   </h4>
                   <p className="text-slate-600 font-light mt-2">
-                    Learn about DFA at Yale and the applicaton process at the
+                    Learn about DFA at Yale and the application process at the
                     CEID.
                   </p>
                 </div>
@@ -1017,18 +1017,21 @@ export default function LandingPage() {
               <div className="flex justify-center md:justify-start gap-6">
                 <a
                   href="https://www.instagram.com/dfayale"
+                  aria-label="Instagram"
                   className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
                 >
                   <Instagram className="w-6 h-6 text-white" />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/dfayale/"
+                  aria-label="LinkedIn"
                   className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
                 >
                   <Linkedin className="w-6 h-6 text-white" />
                 </a>
                 <a
                   href="https://linktr.ee/dfayale"
+                  aria-label="Linktree"
                   className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
                 >
                   <svg
@@ -1041,6 +1044,7 @@ export default function LandingPage() {
                 </a>
                 <a
                   href="mailto:yale@designforamerica.com"
+                  aria-label="Email"
                   className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all hover:-translate-y-1"
                 >
                   <Mail className="w-6 h-6 text-white" />
@@ -1117,7 +1121,7 @@ export default function LandingPage() {
               <span className="text-white font-bold">DFAm</span>
             </p>
             <p>
-              For partnership & inquires, email{" "}
+              For partnership & inquiries, email{" "}
               <a
                 href="mailto:yale@designforamerica.com"
                 className="text-blue-300 hover:text-white transition-colors"
