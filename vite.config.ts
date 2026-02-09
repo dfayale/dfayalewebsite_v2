@@ -6,8 +6,9 @@
 
   export default defineConfig(async ({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
-    const notionApiKey = env.VITE_NOTION_API_KEY;
-    const notionDatabaseId = env.VITE_NOTION_DATABASE_ID;
+    const notionApiKey = env.NOTION_API_KEY || process.env.NOTION_API_KEY;
+    const notionDatabaseId =
+      env.NOTION_DATABASE_ID || process.env.NOTION_DATABASE_ID;
     const tailwindcss = (await import('@tailwindcss/vite')).default;
 
     return {
@@ -28,7 +29,7 @@
               res.setHeader('Content-Type', 'application/json');
               res.end(
                 JSON.stringify({
-                  error: 'Missing VITE_NOTION_API_KEY',
+                  error: 'Missing NOTION_API_KEY',
                 })
               );
               return;
@@ -43,7 +44,7 @@
               res.setHeader('Content-Type', 'application/json');
               res.end(
                 JSON.stringify({
-                  error: 'Missing VITE_NOTION_DATABASE_ID',
+                  error: 'Missing NOTION_DATABASE_ID',
                 })
               );
               return;

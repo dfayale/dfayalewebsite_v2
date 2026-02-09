@@ -52,25 +52,16 @@ function getFilesPropertyUrl(properties: Record<string, any>): string | undefine
 }
 
 /**
- * Fetch events from a Notion database
- * Requires:
- * - VITE_NOTION_API_KEY: Your Notion API key
- * - VITE_NOTION_DATABASE_ID: The ID of your events database
+ * Fetch events from a Notion database via the server proxy
+ * Requires server env vars:
+ * - NOTION_API_KEY: Your Notion API key
+ * - NOTION_DATABASE_ID: The ID of your events database
  */
 export async function fetchEventsFromNotion(): Promise<NotionEvent[]> {
-  const apiKey = import.meta.env.VITE_NOTION_API_KEY;
-  const databaseId = import.meta.env.VITE_NOTION_DATABASE_ID;
-
   console.log("Fetching events from Notion...");
-  console.log("API Key set:", !!apiKey);
-  console.log("Database ID set:", !!databaseId);
 
-  if (!apiKey || !databaseId) {
-    console.error(
-      "Missing Notion API configuration. Please set VITE_NOTION_API_KEY and VITE_NOTION_DATABASE_ID environment variables."
-    );
-    return [];
-  }
+  // Client does not access Notion secrets directly. The proxy is responsible
+  // for server-only env vars (NOTION_API_KEY, NOTION_DATABASE_ID).
 
   try {
     console.log("Making API call to Notion...");

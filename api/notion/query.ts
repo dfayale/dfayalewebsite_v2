@@ -5,8 +5,8 @@ module.exports = async function handler(req: any, res: any) {
   }
 
   // Get environment variables
-  const notionApiKey = process.env.VITE_NOTION_API_KEY;
-  let notionDatabaseId = process.env.VITE_NOTION_DATABASE_ID;
+  const notionApiKey = process.env.NOTION_API_KEY;
+  let notionDatabaseId = process.env.NOTION_DATABASE_ID;
 
   // Allow databaseId to be passed as a query parameter (for fetchMembersFromNotion)
   if (req.query.databaseId && typeof req.query.databaseId === "string") {
@@ -14,13 +14,13 @@ module.exports = async function handler(req: any, res: any) {
   }
 
   if (!notionApiKey) {
-    console.error("Missing VITE_NOTION_API_KEY environment variable");
-    return res.status(500).json({ error: "Missing VITE_NOTION_API_KEY" });
+    console.error("Missing NOTION_API_KEY environment variable");
+    return res.status(500).json({ error: "Missing NOTION_API_KEY" });
   }
 
   if (!notionDatabaseId) {
-    console.error("Missing VITE_NOTION_DATABASE_ID environment variable");
-    return res.status(500).json({ error: "Missing VITE_NOTION_DATABASE_ID" });
+    console.error("Missing NOTION_DATABASE_ID environment variable");
+    return res.status(500).json({ error: "Missing NOTION_DATABASE_ID" });
   }
 
   try {
