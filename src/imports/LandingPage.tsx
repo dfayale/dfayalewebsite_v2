@@ -19,6 +19,7 @@ import svgPathsTeam from "./svg-0i18wol5vg";
 import svgPathsEvents from "./svg-l2jgvjvvmn";
 import svgPathsHighlights from "./svg-afjt7qfqcj";
 import ProStudioPage from "../components/ProStudioPage";
+import ComingSoonPage from "../components/ComingSoonPage";
 import {
   fetchEventsFromNotion,
   NotionEvent,
@@ -290,7 +291,9 @@ const EventCard = ({ event }: { event: NotionEvent | any }) => {
 };
 
 export default function LandingPage() {
-  const [currentPage, setCurrentPage] = useState<"home" | "pro-studio">("home");
+  const [currentPage, setCurrentPage] = useState<
+    "home" | "pro-studio" | "coming-soon"
+  >("home");
   const [activeTab, setActiveTab] = useState<"team" | "events">("team");
   const [notionEvents, setNotionEvents] = useState<NotionEvent[]>([]);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
@@ -377,6 +380,25 @@ export default function LandingPage() {
   // Use Notion events if available, otherwise fall back to hardcoded events
   const displayEvents = notionEvents.length > 0 ? notionEvents : events;
 
+  const eventsByYear = displayEvents.reduce(
+    (acc: Record<string, Array<NotionEvent | any>>, event) => {
+      const parsedYear = event.date ? new Date(event.date).getFullYear() : NaN;
+      const yearLabel = Number.isFinite(parsedYear)
+        ? String(parsedYear)
+        : "Upcoming";
+      if (!acc[yearLabel]) acc[yearLabel] = [];
+      acc[yearLabel].push(event);
+      return acc;
+    },
+    {},
+  );
+
+  const sortedEventYears = Object.keys(eventsByYear).sort((a, b) => {
+    if (a === "Upcoming") return 1;
+    if (b === "Upcoming") return -1;
+    return Number(b) - Number(a);
+  });
+
   const normalizedMembers = notionMembers.map((member) => {
     const role = member.role?.trim() || "Member";
     const roleLower = role.toLowerCase();
@@ -403,6 +425,10 @@ export default function LandingPage() {
 
   if (currentPage === "pro-studio") {
     return <ProStudioPage onNavigate={setCurrentPage} />;
+  }
+
+  if (currentPage === "coming-soon") {
+    return <ComingSoonPage onNavigate={setCurrentPage} />;
   }
 
   return (
@@ -433,7 +459,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-1 md:gap-4">
             <button
-              onClick={() => setCurrentPage("home")}
+              onClick={() => setCurrentPage("coming-soon")}
               className="px-4 py-2 text-lg font-bold transition-colors text-slate-800 hover:text-blue-600"
             >
               Work
@@ -509,10 +535,16 @@ export default function LandingPage() {
               solutions for local businesses, non-profits, and more.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-blue-50 transition-transform hover:scale-105 shadow-lg shadow-blue-900/20">
+              <button
+                onClick={() => setCurrentPage("coming-soon")}
+                className="px-8 py-4 bg-white text-slate-900 rounded-full font-bold hover:bg-blue-50 transition-transform hover:scale-105 shadow-lg shadow-blue-900/20"
+              >
                 View Our Work
               </button>
-              <button className="px-8 py-4 bg-transparent border-2 border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-colors">
+              <button
+                onClick={() => setCurrentPage("coming-soon")}
+                className="px-8 py-4 bg-transparent border-2 border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-colors"
+              >
                 Learn More
               </button>
             </div>
@@ -689,8 +721,6 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <h3 className="text-3xl font-black text-slate-900 mb-8">2025</h3>
-
               {isLoadingEvents ? (
                 <div className="text-center py-12 text-slate-500">
                   Loading events...
@@ -700,9 +730,18 @@ export default function LandingPage() {
                   No events found
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {displayEvents.map((event, i) => (
-                    <EventCard key={i} event={event} />
+                <div className="space-y-12">
+                  {sortedEventYears.map((year) => (
+                    <div key={year} className="space-y-8">
+                      <h3 className="text-3xl font-black text-slate-900">
+                        {year}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {eventsByYear[year].map((event, i) => (
+                          <EventCard key={`${year}-${i}`} event={event} />
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
