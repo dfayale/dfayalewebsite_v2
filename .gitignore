@@ -187,3 +187,10 @@ sketch
 
 .vite/deps/_metadata.json
 .vite/deps/package.json
+
+# Vite build output
+build/
+
+# macOS camera originals (not web-renderable)
+*.HEIC
+*.heic
