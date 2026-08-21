@@ -194,12 +194,31 @@ export async function fetchMembersFromNotion(
 }
 
 /**
+ * Parse a Notion date value into a local Date, or null when unusable.
+ *
+ * A Notion date-only value ("2025-11-12") parses as UTC midnight, which
+ * renders as the previous day anywhere west of UTC. Pin it to local noon.
+ */
+export function parseNotionDate(dateString: string): Date | null {
+  if (!dateString) return null;
+
+  const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(dateString);
+  const date = isDateOnly
+    ? new Date(`${dateString}T12:00:00`)
+    : new Date(dateString);
+
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/**
  * Format a date string to a readable format
  */
 export function formatDate(dateString: string): string {
   if (!dateString) return "";
 
-  const date = new Date(dateString);
+  const date = parseNotionDate(dateString);
+  if (!date) return "";
+
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
