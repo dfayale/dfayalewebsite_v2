@@ -1,5 +1,146 @@
 @custom-variant dark (&:is(.dark *));
 
+/* DFA Studio brand tokens */
+@theme {
+  --color-dfa-blue: #376297;
+  --color-dfa-blue-light: #5b81aa;
+  --color-dfa-ink: #292b2d;
+  --color-dfa-paper: #e4e2dd;
+  --font-sans:
+    "Helvetica Now Display", "Helvetica Neue", Helvetica, "Arial Nova", Arial,
+    ui-sans-serif, system-ui, sans-serif;
+  --ease-swift: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+::selection {
+  background: #376297;
+  color: #e4e2dd;
+}
+
+/*
+ * Hero wordmark focus-pull on load: grows up from the bottom edge as it
+ * sharpens. Origin is the bottom edge so the type stays flush with the
+ * viewport bottom for the whole animation.
+ */
+@keyframes wordmark-in {
+  from {
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+.animate-wordmark-in {
+  transform-origin: bottom center;
+  animation: wordmark-in 2000ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes wordmark-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-wordmark-in {
+    animation-duration: 400ms;
+  }
+}
+
+/*
+ * Clients marquee. The track holds the list 4x, so shifting by a quarter of
+ * its width lands on an identical frame — the loop has no visible seam. Four
+ * copies (rather than two) keep the strip full on wide screens even when the
+ * list is short.
+ */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 45s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/*
+ * Footer star: one slow revolution, always in motion. Purely decorative, so
+ * reduced-motion stops it outright rather than just slowing it down.
+ */
+@keyframes star-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-star-spin {
+  animation: star-spin 24s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-star-spin {
+    animation: none;
+  }
+}
+
+/*
+ * Sticker board. Base rotation uses the standalone `rotate` property so the
+ * hover peel can own `transform` without the two fighting. The peel lifts the
+ * top edge toward the viewer (origin at the bottom) and deepens the shadow,
+ * which reads as a corner coming unstuck on any sticker shape.
+ */
+.sticker {
+  transform-origin: bottom center;
+  transition:
+    transform 260ms cubic-bezier(0.23, 1, 0.32, 1),
+    filter 260ms ease;
+  filter: drop-shadow(0 2px 3px rgba(41, 43, 45, 0.28));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sticker:not(.is-dragging):hover {
+    transform: perspective(700px) rotateX(-18deg) scale(1.03);
+    filter: drop-shadow(0 16px 14px rgba(41, 43, 45, 0.32));
+  }
+}
+
+.sticker.is-dragging {
+  transform: perspective(700px) rotateX(-8deg) scale(1.06);
+  filter: drop-shadow(0 22px 18px rgba(41, 43, 45, 0.34));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker {
+    transition: none;
+  }
+}
+
+/* Pillar cards: pointer-tracked 3D tilt, no sheen or glare. */
+.tilt-card {
+  transform: perspective(900px);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+
 :root {
   --font-size: 16px;
   --background: #ffffff;
@@ -182,4 +323,99 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/*
+ * Inverse-colour cursor blob (src/components/Cursor.tsx). The blob paints
+ * white through `difference`, so it inverts whatever it passes over. The
+ * outer element carries the per-frame position and the inner span carries the
+ * transitioned scale — keeping them apart means the state changes can ease
+ * without fighting the pointer tracking.
+ */
+html.cursor-blob-on,
+html.cursor-blob-on * {
+  cursor: none !important;
+}
+
+.cursor-blob {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.cursor-blob-inner {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #fff;
+  transform: scale(1);
+  transition:
+    transform 320ms var(--ease-swift),
+    opacity 200ms linear;
+}
+
+/* Off-screen, or before the pointer has ever moved */
+.cursor-blob[data-visible="false"] .cursor-blob-inner {
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+/* Over a link, button or field: swell so the thing underneath inverts */
+.cursor-blob[data-hover="true"] .cursor-blob-inner {
+  transform: scale(2.4);
+}
+
+/* Press pulls it in, and snaps faster than it grew */
+.cursor-blob[data-down="true"] .cursor-blob-inner {
+  transform: scale(0.55);
+  transition-duration: 130ms;
+}
+
+.cursor-blob[data-hover="true"][data-down="true"] .cursor-blob-inner {
+  transform: scale(1.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blob-inner {
+    transition-duration: 120ms;
+  }
+}
+
+/*
+ * Page entrance — the hero wordmark's focus-pull, shortened, applied to the
+ * whole page on mount. Keyed by route in App.tsx so it replays on navigation.
+ */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes page-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-page-in {
+    animation-duration: 350ms;
+  }
 }
