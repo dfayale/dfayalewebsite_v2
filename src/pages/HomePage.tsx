@@ -36,16 +36,18 @@ export default function HomePage() {
             </p>
             <div className="mt-6 max-w-2xl space-y-4 text-base md:text-lg text-white/75 leading-relaxed">
               <p>
-                DFA Studio is Yale&rsquo;s student-led product and design studio
-                for students across 15+ disciplines who want to design and build!
-                We bring together technical sense, design sense, business sense,
-                and a lot of drive to help students learn by doing real work:
-                from idea &rarr; prototype &rarr; launch.
+                DFA Studio is Yale&rsquo;s student-led product and design studio,
+                bringing together students across 15+ disciplines. We pair
+                technical, design, and business sense with a lot of drive &mdash;
+                learning by doing real work, from idea &rarr; prototype &rarr;
+                launch.
               </p>
               <p>
-                We run semesterly client projects, workshops and exclusive
-                speaker events, mentorship, and fun community nights and social
-                events!
+                Semesterly client projects, workshops, speaker events,
+                mentorship, and community nights.
+              </p>
+              <p className="text-white font-bold">
+                Join a community of builders and creatives today!
               </p>
             </div>
           </div>

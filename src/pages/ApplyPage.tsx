@@ -23,6 +23,11 @@ const faqs: Array<{
   list?: string[];
 }> = [
   {
+    question: "What is a Design Sprint?",
+    answer:
+      "Our week-long Design Sprint is a real product challenge, with real building and prototyping. No experience needed, just curiosity and hustle to show us what you're made of! The full prompt, teams, and details drop at our Launch Event 09/10.",
+  },
+  {
     question: "Who are you looking for?",
     list: [
       "People who are curious about how products are made",
@@ -75,8 +80,8 @@ export default function ApplyPage() {
             <div className="flex items-center gap-3">
               {/* Live status dot */}
               <span className="relative flex w-3 h-3 shrink-0" aria-hidden="true">
-                <span className="absolute inset-0 rounded-full bg-red-500 opacity-75 animate-ping motion-reduce:animate-none" />
-                <span className="relative w-3 h-3 rounded-full bg-red-500" />
+                <span className="absolute inset-0 rounded-full bg-dfa-blue opacity-75 animate-ping motion-reduce:animate-none" />
+                <span className="relative w-3 h-3 rounded-full bg-dfa-blue" />
               </span>
               <span className="text-lg md:text-2xl text-dfa-ink/80 leading-snug">
                 Apps are open
@@ -140,7 +145,7 @@ export default function ApplyPage() {
         <div className="max-w-[1600px] mx-auto">
           <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4 mb-10">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-dfa-ink">
-              Pre-save the dates
+              Save the dates
             </h2>
             <a
               href="https://luma.com/dfastudio"
@@ -163,33 +168,6 @@ export default function ApplyPage() {
             </a>
           </div>
           <SprintCalendar />
-        </div>
-      </section>
-
-      {/* --- Design Sprint --- */}
-      <section className="relative bg-white px-8 md:px-16 lg:px-24 pt-24 md:pt-32 pb-24 md:pb-32">
-        <div className="max-w-[1600px] mx-auto">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-dfa-ink mb-10">
-            What is a Design Sprint?
-          </h2>
-
-          <div className="max-w-4xl border-l-4 border-dfa-blue pl-6 md:pl-8 space-y-5 text-lg md:text-2xl text-dfa-ink/80 leading-snug">
-            <p>
-              We&rsquo;re cooking up our{" "}
-              <strong className="font-bold text-dfa-ink">
-                week-long Design Sprint
-              </strong>
-              : a real product challenge, with real building and prototyping. No
-              experience needed, just curiosity and hustle to show us what
-              you&rsquo;re made of! &#128153;
-            </p>
-            <p>
-              The full prompt, teams, and details drop at our{" "}
-              <strong className="font-bold text-dfa-ink">
-                Launch Event 09/10
-              </strong>
-            </p>
-          </div>
         </div>
       </section>
 
@@ -250,11 +228,11 @@ export default function ApplyPage() {
             ))}
           </div>
 
-          <p className="mt-16 text-base md:text-lg text-dfa-ink/60 italic">
+          <p className="mt-16 text-base md:text-lg text-dfa-ink/60">
             Questions? Email{" "}
             <a
               href="mailto:yale@designforamerica.com"
-              className="font-bold text-dfa-blue hover:text-dfa-blue-light transition-colors not-italic"
+              className="font-bold text-dfa-blue hover:text-dfa-blue-light transition-colors"
             >
               yale@designforamerica.com
             </a>

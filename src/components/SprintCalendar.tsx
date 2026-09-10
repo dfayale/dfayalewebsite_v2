@@ -55,7 +55,7 @@ export default function SprintCalendar() {
               key={day}
               className={`h-28 md:h-40 p-1.5 md:p-3 ${
                 event?.deadline
-                  ? "bg-red-500/10"
+                  ? "bg-dfa-blue/20"
                   : inSprint
                     ? "bg-dfa-blue/10"
                     : "bg-white"
@@ -63,11 +63,9 @@ export default function SprintCalendar() {
             >
               <span
                 className={`text-sm md:text-lg tabular-nums ${
-                  event?.deadline
-                    ? "font-bold text-red-600"
-                    : event
-                      ? "font-bold text-dfa-blue"
-                      : "font-normal text-dfa-ink/50"
+                  event
+                    ? "font-bold text-dfa-blue"
+                    : "font-normal text-dfa-ink/50"
                 }`}
               >
                 {day}
@@ -76,7 +74,7 @@ export default function SprintCalendar() {
                 <>
                   <span
                     className={`block mt-1 md:mt-2 text-[10px] md:text-sm leading-tight font-bold hyphens-auto ${
-                      event.deadline ? "text-red-600" : "text-dfa-ink"
+                      event.deadline ? "text-dfa-blue" : "text-dfa-ink"
                     }`}
                   >
                     {event.name}
