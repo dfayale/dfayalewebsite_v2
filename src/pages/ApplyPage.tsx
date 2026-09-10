@@ -79,7 +79,7 @@ export default function ApplyPage() {
                 <span className="relative w-3 h-3 rounded-full bg-red-500" />
               </span>
               <span className="text-lg md:text-2xl text-dfa-ink/80 leading-snug">
-                opening 09/10
+                Applications are open
               </span>
             </div>
             <span
@@ -87,12 +87,12 @@ export default function ApplyPage() {
               aria-hidden="true"
             />
             <a
-              href="https://luma.com/dfastudio"
+              href="https://dfastudio.notion.site/"
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-2 text-lg md:text-2xl text-dfa-ink/70 hover:text-dfa-ink leading-snug transition-[color,transform] duration-150 ease-swift active:scale-[0.98]"
+              className="group inline-flex items-center gap-2 text-lg md:text-2xl font-bold text-dfa-blue hover:text-dfa-blue-light leading-snug transition-[color,transform] duration-150 ease-swift active:scale-[0.98]"
             >
-              <span>get notified</span>
+              <span>Apply now &mdash; sprint details &amp; application</span>
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"

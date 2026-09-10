@@ -1,11 +1,6 @@
 import StarCanvas from "../components/StarCanvas";
-import type { Page } from "../App";
 
-export default function HomePage({
-  onNavigate,
-}: {
-  onNavigate: (page: Page) => void;
-}) {
+export default function HomePage() {
   return (
     <>
       {/*
@@ -33,21 +28,39 @@ export default function HomePage({
       {/* --- Blue band --- */}
       <section className="relative z-20 bg-dfa-blue px-8 md:px-16 lg:px-24 py-24 md:py-32">
         <div className="max-w-[1600px] mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-end">
-          <p className="text-3xl md:text-5xl text-white font-bold tracking-tight leading-[1.1]">
-            Yale&rsquo;s Student
-            <br />
-            Product &amp; Design Studio
-          </p>
+          <div>
+            <p className="text-3xl md:text-5xl text-white font-bold tracking-tight leading-[1.1]">
+              Yale&rsquo;s Student
+              <br />
+              Product &amp; Design Studio
+            </p>
+            <div className="mt-6 max-w-2xl space-y-4 text-base md:text-lg text-white/75 leading-relaxed">
+              <p>
+                DFA Studio is Yale&rsquo;s student-led product and design studio
+                for students across 15+ disciplines who want to design and build!
+                We bring together technical sense, design sense, business sense,
+                and a lot of drive to help students learn by doing real work:
+                from idea &rarr; prototype &rarr; launch.
+              </p>
+              <p>
+                We run semesterly client projects, workshops and exclusive
+                speaker events, mentorship, and fun community nights and social
+                events!
+              </p>
+            </div>
+          </div>
           <div className="md:justify-self-end">
-            <button
-              onClick={() => onNavigate("apply")}
-              className="group inline-flex items-center gap-3 text-white/90 hover:text-white text-xl md:text-3xl font-normal tracking-tight transition-[color,transform] duration-150 ease-swift active:scale-[0.98]"
+            <a
+              href="https://dfastudio.notion.site/"
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center gap-3 text-white hover:text-white text-2xl md:text-4xl font-bold tracking-tight transition-[color,transform] duration-150 ease-swift active:scale-[0.98]"
             >
-              <span>Apply F26</span>
+              <span>Apply now</span>
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                className="w-6 h-6 md:w-8 md:h-8 shrink-0 transition-transform duration-150 ease-swift group-hover:translate-x-1 group-hover:-translate-y-1"
+                className="w-7 h-7 md:w-9 md:h-9 shrink-0 transition-transform duration-150 ease-swift group-hover:translate-x-1 group-hover:-translate-y-1"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.75"
@@ -55,7 +68,10 @@ export default function HomePage({
                 <path d="M7 17 17 7" />
                 <path d="M8 7h9v9" />
               </svg>
-            </button>
+            </a>
+            <p className="mt-3 text-sm md:text-base text-white/70">
+              Applications are open &middot; sprint details inside
+            </p>
           </div>
         </div>
       </section>

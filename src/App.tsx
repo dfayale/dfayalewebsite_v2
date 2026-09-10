@@ -41,14 +41,14 @@ export default function App() {
         behind it and be revealed as the last section scrolls away.
       */}
       <div key={page} className="animate-page-in relative z-10 bg-dfa-paper">
-        {page === "home" && <HomePage onNavigate={navigate} />}
+        {page === "home" && <HomePage />}
         {page === "about" && <AboutPage onNavigate={navigate} />}
         {page === "events" && <EventsPage />}
         {page === "team" && <TeamPage />}
         {page === "apply" && <ApplyPage />}
       </div>
-      {/* The home page ends on the blue band — no footer there */}
-      {page !== "home" && <Footer />}
+      {/* Home gets a slim footer; every other page gets the full lockup */}
+      {page === "home" ? <Footer compact /> : <Footer />}
       <Cursor />
     </div>
   );
