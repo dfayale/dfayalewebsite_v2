@@ -31,7 +31,7 @@ export default function SprintCalendar() {
 
   return (
     <div>
-      <h4 className="text-xs md:text-sm uppercase tracking-[0.2em] text-dfa-ink/40 mb-4">
+      <h4 className="text-sm md:text-base font-bold tracking-tight text-dfa-ink/50 mb-4">
         September 2026
       </h4>
 
@@ -39,7 +39,7 @@ export default function SprintCalendar() {
         {WEEKDAYS.map((day) => (
           <div
             key={day}
-            className="text-xs md:text-sm uppercase tracking-[0.2em] text-dfa-ink/40 text-center pb-2"
+            className="text-xs md:text-sm font-bold tracking-tight text-dfa-ink/40 text-center pb-2"
           >
             {day}
           </div>
@@ -55,7 +55,7 @@ export default function SprintCalendar() {
               key={day}
               className={`h-28 md:h-40 p-1.5 md:p-3 ${
                 event?.deadline
-                  ? "bg-red-500/10"
+                  ? "bg-dfa-blue/20"
                   : inSprint
                     ? "bg-dfa-blue/10"
                     : "bg-white"
@@ -63,11 +63,9 @@ export default function SprintCalendar() {
             >
               <span
                 className={`text-sm md:text-lg tabular-nums ${
-                  event?.deadline
-                    ? "font-bold text-red-600"
-                    : event
-                      ? "font-bold text-dfa-blue"
-                      : "font-normal text-dfa-ink/50"
+                  event
+                    ? "font-bold text-dfa-blue"
+                    : "font-normal text-dfa-ink/50"
                 }`}
               >
                 {day}
@@ -76,7 +74,7 @@ export default function SprintCalendar() {
                 <>
                   <span
                     className={`block mt-1 md:mt-2 text-[10px] md:text-sm leading-tight font-bold hyphens-auto ${
-                      event.deadline ? "text-red-600" : "text-dfa-ink"
+                      event.deadline ? "text-dfa-blue" : "text-dfa-ink"
                     }`}
                   >
                     {event.name}
@@ -94,12 +92,12 @@ export default function SprintCalendar() {
         })}
       </div>
 
-      <p className="mt-4 flex items-center gap-3 text-sm text-dfa-ink/60">
+      <p className="mt-4 flex items-center gap-3 text-sm font-bold tracking-tight text-dfa-ink/50">
         <span
           className="inline-block w-4 h-4 bg-dfa-blue/10 border border-dfa-ink/15 shrink-0"
           aria-hidden="true"
         />
-        Design Sprint &middot; Sep 10 &rarr; Sep 18
+        Design Sprint &middot; Sep 10&ndash;18
       </p>
     </div>
   );

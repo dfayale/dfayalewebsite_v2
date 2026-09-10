@@ -1,7 +1,7 @@
 import { CalendarDays, Instagram, Linkedin, Mail } from "lucide-react";
 import imgStar from "../assets/star.png";
 
-export default function Footer() {
+export default function Footer({ compact = false }: { compact?: boolean }) {
   const socials = [
     {
       href: "https://www.instagram.com/dfayale",
@@ -24,6 +24,36 @@ export default function Footer() {
       icon: <CalendarDays className="w-5 h-5" />,
     },
   ];
+
+  if (compact) {
+    return (
+      <footer className="relative z-0 bg-dfa-ink text-dfa-paper px-8 md:px-16 lg:px-24 py-12 md:py-14">
+        <div className="max-w-[1600px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="flex gap-px bg-dfa-paper/20 border border-dfa-paper/20 self-start">
+            {socials.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                aria-label={social.label}
+                className="w-11 h-11 bg-dfa-ink flex items-center justify-center text-dfa-paper/70 hover:text-dfa-ink hover:bg-dfa-paper transition-colors duration-150"
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+          <p className="text-sm text-dfa-paper/50">
+            Partnership &amp; inquiries:{" "}
+            <a
+              href="mailto:yale@designforamerica.com"
+              className="text-dfa-paper/80 hover:text-white transition-colors duration-150"
+            >
+              yale@designforamerica.com
+            </a>
+          </p>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer className="md:sticky md:bottom-0 z-0 overflow-hidden bg-dfa-ink text-dfa-paper px-8 md:px-16 lg:px-24 pt-16 md:pt-20">
