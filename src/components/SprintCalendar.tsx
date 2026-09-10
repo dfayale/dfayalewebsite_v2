@@ -31,7 +31,7 @@ export default function SprintCalendar() {
 
   return (
     <div>
-      <h4 className="text-xs md:text-sm uppercase tracking-[0.2em] text-dfa-ink/40 mb-4">
+      <h4 className="text-sm md:text-base font-bold tracking-tight text-dfa-ink/50 mb-4">
         September 2026
       </h4>
 
@@ -39,7 +39,7 @@ export default function SprintCalendar() {
         {WEEKDAYS.map((day) => (
           <div
             key={day}
-            className="text-xs md:text-sm uppercase tracking-[0.2em] text-dfa-ink/40 text-center pb-2"
+            className="text-xs md:text-sm font-bold tracking-tight text-dfa-ink/40 text-center pb-2"
           >
             {day}
           </div>
@@ -92,12 +92,12 @@ export default function SprintCalendar() {
         })}
       </div>
 
-      <p className="mt-4 flex items-center gap-3 text-sm text-dfa-ink/60">
+      <p className="mt-4 flex items-center gap-3 text-sm font-bold tracking-tight text-dfa-ink/50">
         <span
           className="inline-block w-4 h-4 bg-dfa-blue/10 border border-dfa-ink/15 shrink-0"
           aria-hidden="true"
         />
-        Design Sprint &middot; Sep 10 &rarr; Sep 18
+        Design Sprint &middot; Sep 10&ndash;18
       </p>
     </div>
   );
