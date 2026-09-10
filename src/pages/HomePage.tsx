@@ -35,7 +35,7 @@ export default function HomePage() {
               Product &amp; Design Studio
             </p>
             <div className="mt-6 max-w-xl space-y-4 text-base md:text-lg text-white/75 leading-relaxed">
-              <p>
+              <p className="hidden md:block">
                 Yale&rsquo;s student-led studio for students across 15+
                 disciplines &mdash; designing and building real work, from idea
                 &rarr; prototype &rarr; launch.
